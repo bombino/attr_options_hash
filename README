@@ -1,0 +1,46 @@
+attr_options_hash
+=================
+
+Sometimes your models have a lot of crazy options that are rarely used.  
+Rather than make a database column for each one of them, let's just create
+one column called options, and store all the options there.  This plugin
+makes that easy.
+
+To use:  you'll need a column in your model called 'options', and it should
+be a text field in the DB.  
+
+Then simply call attr_options_hash the same way you would call attr_accessor.
+
+One bonus feature: you can declare fields as boolean by pasisng in a hash 
+with the key as the field name and boolean as the value.  This will automatically
+set the fields to nil if they are passed in a 0, "0", or false.  This is cool
+because it makes HTML forms work as expected.
+
+
+Example
+=======
+
+MyModel < ActiveRecord::Base
+	attr_options_hash :hint, :toggle_option => :boolean
+end
+
+>> model = MyModel.new(:hint => "123")
+=> #<MyModel id: nil, options: {:hint=>"123"}>
+
+>> model.hint
+=> "123"
+
+>> model.hint = "456"
+=> "456"
+
+>> model.hint
+=> "456"
+
+>> model = MyModel.new(:toggle_option => 0)
+=> #<MyModel id: nil, options: {}>
+
+>> model = MyModel.new(:toggle_option => 1)
+=> #<MyModel id: nil, options: {:toggle_option => true}>
+
+Copyright (c) 2008-2009 Action Verb, LLC
+Plugin created by Kevin Bombino.  kevin@bombino.org
